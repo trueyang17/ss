@@ -1,0 +1,470 @@
+@import 'reset.min.css';
+@import 'swiper-bundle.css';
+@import (reference)'common.less';
+@keyframes tada {
+    from {
+      transform: scale3d(1, 1, 1);
+    }
+  
+    10%,
+    20% {
+      transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    }
+  
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+  
+    40%,
+    60%,
+    80% {
+      transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+  
+    to {
+      transform: scale3d(1, 1, 1);
+      opacity: 1;
+    }
+}
+@keyframes bounce {
+    from,
+    20%,
+    53%,
+    to {
+      -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    40%,
+    43% {
+      -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      -webkit-transform: translate3d(0, -30px, 0) scaleY(1.1);
+      transform: translate3d(0, -30px, 0) scaleY(1.1);
+    }
+  
+    70% {
+      -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      -webkit-transform: translate3d(0, -15px, 0) scaleY(1.05);
+      transform: translate3d(0, -15px, 0) scaleY(1.05);
+    }
+  
+    80% {
+      -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      -webkit-transform: translate3d(0, 0, 0) scaleY(0.95);
+      transform: translate3d(0, 0, 0) scaleY(0.95);
+    }
+  
+    90% {
+      -webkit-transform: translate3d(0, -4px, 0) scaleY(1.02);
+      transform: translate3d(0, -4px, 0) scaleY(1.02);
+    }
+}
+@keyframes shakeX {
+    from,
+    to {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      -webkit-transform: translate3d(-10px, 0, 0);
+      transform: translate3d(-10px, 0, 0);
+    }
+  
+    20%,
+    40%,
+    60%,
+    80% {
+      -webkit-transform: translate3d(10px, 0, 0);
+      transform: translate3d(10px, 0, 0);
+    }
+}
+@keyframes heartBeat {
+    0% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  
+    14% {
+      -webkit-transform: scale(1.3);
+      transform: scale(1.3);
+    }
+  
+    28% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  
+    42% {
+      -webkit-transform: scale(1.3);
+      transform: scale(1.3);
+    }
+  
+    70% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+}
+@keyframes musicRotate{
+    0%{
+        transform: rotate(0deg);
+    }
+    10%{
+        transform: rotate(36deg);
+    }
+    20%{
+        transform: rotate(72deg);
+    }
+    30%{
+        transform: rotate(108deg);
+    }
+    40%{
+        transform: rotate(144deg);
+    }
+    50%{
+        transform: rotate(180deg);
+    }
+    60%{
+        transform: rotate(216deg);
+    }
+    70%{
+        transform: rotate(252deg);
+    }
+    80%{
+        transform: rotate(288deg);
+    }
+    90%{
+        transform: rotate(324deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+html,body{
+    height: 100%;
+    overflow: hidden;
+    background: #e4e4e4;
+    touch-action: none;
+}
+.container{
+    margin: 0 auto;
+    max-width: 750px;   
+    height: 100%;
+}
+.cubeBox, .swiperBox{
+    height: 100%;
+    display: none;
+}
+//魔方区域
+.cubeBox{
+    // display: block;
+    position: relative;
+    background: url(./img/zf_cubeBg.jpg) center no-repeat;
+    background-size: cover;
+    .cube{
+        width: 4rem;
+        height: 4rem;
+        .CENTER(4,4);
+        li{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            img{
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+    }
+    perspective: 2000;
+    perspective-origin: 10% 10%;
+    .cube{
+        transform-style: preserve-3d;
+        transform: scale(1.2) rotateX(-40deg) rotateY(45deg);
+        transition: transform .5s;
+        // animation: MF 10s linear 2s infinite;
+        li:nth-child(1){
+            transform: translateZ(2rem);
+        }
+        li:nth-child(2){
+            transform: translateZ(-2rem) rotateY(180deg);
+        }
+        li:nth-child(3){
+            transform: translateX(2rem) rotateY(90deg);
+        }
+        li:nth-child(4){
+            transform: translateX(-2rem) rotateY(-90deg);
+        }
+        li:nth-child(5){
+            transform: translateY(2rem) rotateX(-90deg);
+        }
+        li:nth-child(6){
+            transform: translateY(-2rem) rotateX(90deg);
+        }
+    }
+    @keyframes MF {
+        0%{transform:scale(1.2)  rotateX(90deg)}
+        25%{transform:scale(0.8)  rotateY(180deg)}
+        50%{transform:scale(1)  rotateZ(90deg)}
+        75%{transform:scale(0.8)  rotateY(-180deg)}
+        100%{transform:scale(1.2)  rotateX(-90deg)}
+    }
+    .tip{
+        position: absolute;
+        width: 3.94rem;
+        height: 0.5rem;
+        .BG-IMAGE('zhufeng.jpg');
+        .CENTER-X(3.94rem);
+        bottom: .5rem;
+    }
+}
+//滑屏区域
+.swiperBox{
+    // display: block;
+    .returnBox{
+        z-index: 99;
+        position: absolute;
+        right: .3rem;
+        top: .3rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 2rem;
+        background: red;
+        img{
+            border-radius: 2rem;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .swiper-container,
+    .swiper-slide{
+        position: relative;
+        height: 100%;
+        overflow: hidden; 
+        
+    }
+
+    .page1{
+        background: #fff;
+        perspective: 2000px;
+        .baseInfo{
+            transform-style: preserve-3d;
+            width: 6rem;
+            height: 6.6rem;
+            box-sizing: border-box;
+            .CENTER(6,6.6);      
+            dt,dd{
+                box-sizing: border-box;
+                height: .6rem;
+                line-height: .6rem;
+                border-top: .01rem dashed rgba(255,255,255, .5);
+                background: lightblue;
+                //文本过多不超行加省略号
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            dt{
+                text-align: center;
+                color: yellow;
+                font-size: .4rem;
+            }
+            dd{
+                padding-left: .66rem;
+                font-size: .35rem;
+                position: relative;
+                em{
+                    width: .5rem;
+                    height: .5rem;
+                    .CENTER-Y(.5);
+                    left: .1rem;
+                    line-height: .5rem;
+                    text-align: center;
+                    font-style: normal;
+                    border-radius: .3rem;
+                    background: crimson;
+                    font-size: .28rem;
+                    z-index: 999;
+                }
+                p{
+                    position: relative;
+                    z-index: 999;
+                }
+                       
+            }
+        }
+    }
+
+    .page2{
+        background: #fff9c1;        
+        h3{
+            
+            margin-top: .2rem;
+            width: 100%;
+            text-align: center;
+            font-weight: normal;
+            font-size: 1rem;
+        }
+        div{
+            
+            margin-top: .5rem;
+            position: relative;
+            border: .01rem solid indigo;
+            img{
+                position: absolute;
+                width: 2rem;
+                height: 2rem;
+                border-radius: 2rem;
+                opacity: 0;
+            }
+            img:nth-child(1){
+                top: 1.5rem;//0.3rem
+                left: 50%;
+                transform: translateX(-50%);
+
+            }
+            img:nth-child(2){
+                top: 3rem;  //2.3rem;
+                left: 1.3rem; //.3rem;
+
+            }
+            img:nth-child(3){
+                top: 3rem; //2.3rem;
+                right: 1.3rem; //.3rem;
+            }
+            img:nth-child(4){
+                width: 3rem;
+                height: 3rem;
+                top: 3.5rem;
+                left: 50%;
+                margin-left: -1.5rem;
+                opacity: 1;
+            }
+
+            img:nth-child(5){
+                top: 5rem; //5.5rem;
+                left: 1.3rem; //.3rem;
+            }
+            img:nth-child(6){
+                top: 5rem; //5.5rem;
+                right: 1.3rem; //.3rem;
+            }
+            img:nth-child(7){
+                top: 6.5rem; //7.7rem;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+        }
+        
+    }
+
+    #page2{
+        h3{
+            animation: bounce 3s both;
+        }
+        div{
+            img{
+                opacity: 1;
+                transition: all 1s;
+                animation: tada 1s 1s infinite;
+            }
+            img:nth-child(4){
+                animation: shakeX 3s both;
+            }
+            img:nth-child(1){
+                top: 0.3rem;
+                left: 50%;
+                margin-left: -1rem;
+
+            }
+            img:nth-child(2){
+                top: 2.3rem;
+                left: .3rem;
+
+            }
+            img:nth-child(3){
+                top: 2.3rem;
+                right: .3rem;
+            }
+            img:nth-child(5){
+                top: 5.5rem;
+                left: .3rem;
+            }
+            img:nth-child(6){
+                top: 5.5rem;
+                right: .3rem;
+            }
+            img:nth-child(7){
+                top: 7.7rem;
+                left: 50%;
+                margin-left: -1rem;
+            }
+
+        }
+    }
+
+    .page3{
+        background: #e45454;
+        
+        .title{
+            opacity: 0;
+            width: 3.82rem;
+            height: 1.41rem;
+            .CENTER-X(3.82);
+            top: .5rem;
+        }
+       
+    }
+    #page3{
+        .title{
+            transition: all 1s;
+            opacity: 1;
+            animation: heartBeat 2s 1s both;
+        }
+    }
+    .page4{
+        background: #fac471;
+
+    }
+    .page5{
+        background: #fbffe8;
+
+    }
+    .page6{
+        background: #5975ff;
+
+    }
+
+}
+//音乐区域
+.musicBox{
+    .musicIcon{
+        display: none;
+        position: absolute;
+        top: .2rem;
+        left: .2rem;
+        z-index: 9999;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 1rem;
+        .BG-IMAGE('music.jpg');
+    }
+    .move{
+        animation: musicRotate .6s infinite;
+    }
+}

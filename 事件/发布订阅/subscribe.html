@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class EventBus{
+            constructor(){
+                this.pond = {}
+            }
+
+            on(type,func){
+                let pond = this.pond;
+                if(!pond.type) pond.type = [];
+                if(typeof func !== 'function') return;//func必须传入函数
+                let pondA = pond.type;        
+                !pondA.includes(func) ? pondA.push(func) : null;//去重
+            }
+
+            fire(type){
+                let pondA = this.pond.type || [];
+                let args = [].slice.call(arguments,1);
+                for (let i = 0; i < pondA.length; i++) {
+                    if (typeof pondA[i] !== 'function') {
+                        pondA.splice(i,1);
+                        i--;
+                        continue;
+                    }
+                    pondA[i].apply(this,args)
+                }
+
+            }
+
+            remove(type,func){
+                let pondA = this.pond.type;
+                console.log(pondA)
+                if(!pondA) return;
+                for (let i = 0; i < pondA.length; i++) {
+                    if (pondA[i] == func) {
+                        pondA[i] = null;
+                        return;
+                    }
+                }
+            }
+
+        }
+
+        let f = new EventBus()
+        console.log(f)
+        function func1(a1) {
+            console.log('a1')
+        }
+        function func2(a2) {
+            console.log(a2)
+        }
+        f.on('ary',func1)
+        f.on('ary',func2)
+        f.remove('ary',func1)
+        f.fire('ary','ewewewew')
+    </script>
+</body>
+</html>

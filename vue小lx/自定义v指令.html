@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .date{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box" v-outside>
+            <input type="text">
+            <div class="date" v-if="isShow">
+                日历控件
+                <button>确定</button>
+            </div>
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                isShow:false
+            },
+            methods: {
+                blur(){
+                    this.isShow = false
+                },
+                focus(){
+                    this.isShow = true
+                }
+            },
+            directives:{
+                'outside':{
+                    bind(el,binding,vnode){
+                        console.log(el,vnode)
+                        //vnode虚拟节点vnode.context上下文vue实例
+                        el.fn = e=>{
+                            if (el.contains(e.target)) {//有e.target说明触发了事件，触发才有e.target,点击就出框，不点击就消失
+                                vnode.context.focus()
+                            } else{
+                                vnode.context.blur()
+                            }
+                        }
+                        document.addEventListener('click',el.fn,false)
+                    },
+                    unbind(el){
+                        console.log('指令销毁')
+                        document.removeEventListener('click',el.fn,false)
+                    }
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+button{
+    @v:lightgreen;
+    width: 50px;
+    height: 30px;
+    background: @v;
+    //内置函数darken颜色变深，lighten颜色变浅；
+    &:hover{
+        background: darken(@v,40%);
+        background: lighten(@v,40%);
+    }
+}

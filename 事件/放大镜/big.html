@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box1,#box2{
+            width: 350px;
+            height: 350px;
+            position: relative;
+            top: 30px;
+            left: 30px;
+            border: 1px solid lawngreen;
+            float: left;
+        }
+        #box1 img{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #mask{
+            width: 175px;
+            height: 175px;
+            background: rgba(0,0,0,0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: move;
+            display: none;
+            /* z-index: 9; */
+        }
+        #box2{
+            top: 30px;
+            left: 50px;
+            overflow: hidden;
+        }
+        #box2 img{
+            position: absolute;
+            display: block;
+            width: 700px;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box1">
+        <img src="p40.jpg" alt="">
+        <div id="mask"></div>
+    </div>
+    <div id="box2">
+        <img src="p40.jpg" alt="">
+    </div>
+    <script>
+        let box1 = document.querySelector('#box1');
+        let mask = document.querySelector('#mask');
+        let box2 = document.querySelector('#box2');
+        let img = box2.querySelector('img');
+        box1.onmouseenter = function () {
+            mask.style.display = 'block';//元素的隐现是一个点
+            box2.style.display = 'block';
+            mask.onmousemove = function (ev) {
+                let clientX = ev.clientX;
+                let clientY = ev.clientY;
+                console.log(clientX,clientY)
+                let maxL = box1.clientWidth - mask.clientWidth;
+                let maxT = box1.clientHeight - mask.clientHeight;
+                //鼠标居中是一个点,减去遮罩一半的宽高可以使鼠标坐标居中,初始值减去mask值的一半时l值肯定小于0的，因为鼠标光标位置默认是在左上角，而规定了鼠标最小值小于0时等于0则mask就被右移了一半正好居中，这是一个技巧。
+                let l = clientX - box1.offsetLeft - 2 - mask.clientWidth/2;
+                let t = clientY - box1.offsetTop - 2 - mask.clientHeight/2;
+                if (l <= 0) l = 0;
+                if (l >= maxL) l = maxL;
+                if (t <= 0) t = 0;
+                if (t >= maxT) t = maxT;
+                mask.style.left = l + 'px';
+                mask.style.top = t + 'px';
+                img.style.left = -2 * l + 'px';
+                img.style.top = -2 * t + 'px';
+            }
+        }
+
+        box1.onmouseleave = function () {
+            mask.style.display = 'none';
+            box2.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

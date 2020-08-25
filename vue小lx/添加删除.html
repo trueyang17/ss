@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="inp">
+    <button id="btn">添加</button>
+    <ul id="box"></ul>
+    <script>
+        let inp = document.getElementById('inp');
+        let btn = document.getElementById('btn');
+        let box = document.getElementById('box');
+        function fn() {
+            let val = inp.value.trim();
+            let str = ``;
+            str += `<li>
+                    ${val}
+                    <button>删除</button>
+                </li>`;
+            box.innerHTML += str;
+            inp.value = '';
+        }
+
+        inp.onkeydown =  function (ev) {
+            if (ev.keyCode === 13) {
+                fn()
+                dele()
+            }
+        }
+
+        btn.onclick = function (ev) {
+            fn()
+            dele()
+        }
+
+        function dele() {
+            let dele = box.getElementsByTagName('button');
+            for (let i = 0; i < dele.length; i++) {
+                dele[i].onclick = function () {
+                    this.parentNode.remove()
+                }
+            }
+    
+        }
+        
+        
+    </script>
+</body>
+</html>

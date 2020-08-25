@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;padding: 0;
+        }
+        html,body{
+            background: #eee;
+        }
+        ul{
+            height: 50px;width: 1200px;margin: 30px auto;background: #fff
+        }
+        li{
+            float: left;position: relative;margin: 0 40px;list-style: none;
+            font-size: 20px;line-height: 50px;
+        }
+        li i{
+            width: 0;height: 0;right: -15px;
+        }
+        li i.up{
+            position: absolute;
+            border: 5px solid transparent;
+            border-bottom-color: gray;
+            top: 12.5px;
+        }
+        li i.up.active{
+            position: absolute;
+            border: 5px solid transparent;
+            border-bottom-color: red;
+            top: 12.5px;
+        }
+
+        li i.down{
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: gray;
+            bottom: 12.5px;
+        }
+        li i.down.active{
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: red;
+            bottom: 12.5px;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>上架时间
+            <i class="up"></i>
+            <i class="down"></i>
+        </li>
+        <li>价格
+            <i class="up"></i>
+            <i class="down"></i>
+        </li>
+        <li>热度
+            <i class="up"></i>
+            <i class="down"></i>
+        </li>
+    </ul>
+    <script>
+        var oLis = document.getElementsByTagName('li');
+        for (let i = 0; i < oLis.length; i++) {
+            oLis[i].flag = -1;
+            oLis[i].onclick = function (e) {
+                this.flag *= -1;
+                for (let j = 0; j < oLis.length; j++) {
+                    if (!this.flag) {
+                        this.flag == -1;
+                    }
+                    var oIs1 = oLis[j].getElementsByTagName('i');
+                    for (let k = 0; k < oIs1.length; k++) {
+                        oIs1[k].classList.remove('active');   
+                    }
+                }
+                var oIs = oLis[i].getElementsByTagName('i');
+                if (this.flag === 1) {
+                    oIs[0].classList.add('active');
+                    oIs[1].classList.remove('active');
+                } else {                    
+                    oIs[0].classList.remove('active');
+                    oIs[1].classList.add('active');
+                }
+            }            
+        }
+    </script>
+</body>
+</html><SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

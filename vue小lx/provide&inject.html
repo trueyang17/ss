@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <div id="app">
+        <my-Vote v-for="(item, index) in voteList" :title=item.title ></my-vote>
+
+    </div>
+
+    <template id="MyVote">
+        <div class="container">
+            <h3> 
+                <span> {{title}} </span> 
+                <span>参与人数：{{supNum + oppNum}} </span>
+            <h3>
+            <vote-content></vote-content>
+            <vote-footer></vote-footer>
+        </div>
+    </template>
+
+    <template id="VoteContent">
+        <div>
+            <p>支持：{{supNum}} </p>
+            <p>反对：{{oppNum}} </p>
+            <p>支持率：{{ratio}} </p>
+        </div>
+    </template>
+
+    <template id="VoteFooter">
+        <div>
+            <button @click=handle('support')>赞成</button>
+            <button @click=handle('oppose') >反对</button>
+        </div>
+    </template>
+
+    <script src="vue.js"></script>
+    <script>
+        
+        let VoteContent = {
+            template:'#VoteContent',
+            inject:['nums'],
+            computed: {
+                ratio(){
+                    let total = this.nums.supNum + this.nums.oppNum;
+                    if (total === 0) {
+                        return '0%'
+                    }
+                    return (this.nums.supNum/total * 100).toFixed(2) + '%'
+                }
+            },
+        }
+        let VoteFooter = {
+            template:'#VoteFooter',
+            inject:['change'],
+            methods: {
+                handle(type){
+                    this.change(type)
+                }
+            },
+        }   
+        let myVote = {
+            template:'#MyVote',
+            props:['title'],
+            provide(){
+                return {
+                    nums:this.nums,
+                    change:this.change
+                }
+            },
+            data() {
+                return {
+                    nums:{
+                        supNum:0,
+                        oppNum:0,
+                    }  
+                }
+            },
+            components:{
+                VoteContent,
+                VoteFooter
+            },
+            methods: {
+                change(type){
+                    console.log(this.supNum)
+                    type === 'support' ? this.nums.supNum++ : this.nums.oppNum++;
+                }
+            },
+
+        }
+        
+        let vm = new Vue({
+            el:'#app',
+            data: {
+                voteList:[{
+                    id:1,title:'能不能学会前端？'
+                },{
+                    id:2,title:'能不能找到工作？'
+                }]
+            },
+            components:{
+               myVote
+            }
+        })
+    </script>
+</body>
+</html>

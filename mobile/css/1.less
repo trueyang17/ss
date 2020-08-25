@@ -1,0 +1,57 @@
+@import 'reset.min.css';
+@import 'a.less';
+@import 'animate.css';
+@color-red:red;
+/*
+unit函数删除或者添加单位
+extend:它将要设置的选择器与其引用的选择器合并
+*/
+.box{
+    @src:'./img';
+    @W:200;
+    @H:200px;
+    margin: 160px auto;
+    width: unit(@W,px);
+    height: unit(unit(@H,px),px);
+    border: 5px solid teal;
+    overflow: hidden;
+    background: url('@{src}/pic.png') no-repeat; 
+    background-size: 100% 100%;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: unit((@W/3),px);
+    img{
+        width: 100%;
+        height: 100%;
+        transition: 1s;
+    }
+    &:hover{
+        transform: scale(2);
+    }
+}
+.box2{
+    margin: 30px;
+    width: 100px;
+    height: 100px;
+    background: @color-red;
+}
+.box1{
+    &:extend(.box2);
+    // box1引用box2的属性和属性值
+}
+
+.func_transition(){
+
+}
+
+.func(@W:300,@H:200){
+    width:unit(@W,px);
+    height: 100px;
+    background: @color-red;
+}
+.box3{
+    .func;
+    
+}

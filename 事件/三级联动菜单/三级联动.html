@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>纯JS省市区联动</title>
+</head>
+<body>
+	<div>
+		省：<select id="cmbProvince"></select>
+		市：<select id="cmbCity"></select>
+		区：<select id="cmbArea"></select>
+		<br /><br />
+		省：<select id="Select1"></select>
+		市：<select id="Select2"></select>
+		区：<select id="Select3"></select>
+	</div>
+	<script type="text/javascript">
+		let xhr = new XMLHttpRequest;
+		xhr.open('get','regionData.json',false);
+		xhr.onreadystatechange = ()=>{
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				provinceList = JSON.parse(xhr.response)
+			}
+		}
+		xhr.send();
+
+		function addressInit(_cmbProvince, _cmbCity, _cmbArea, defaultProvince, defaultCity, defaultArea){
+		    var cmbProvince = document.getElementById(_cmbProvince);
+		    var cmbCity = document.getElementById(_cmbCity);
+		    var cmbArea = document.getElementById(_cmbArea);
+		    		   
+		    //创建option
+		    function cmbAddOption(cmb, str, obj) {
+		        var option = document.createElement("OPTION");//创建option元素				  
+		        option.innerHTML = str;
+		        option.value = str;
+		        cmb.options.add(option);
+		        option.obj = obj;
+		    }
+
+			//设置默认值
+			// function cmbSelect(cmb, str){
+		    //     for(var i=0; i<cmb.options.length; i++){
+		    //         if(cmb.options[i].value == str){
+		    //             cmb.selectedIndex = i;
+		    //             return;
+		    //         }
+		    //     }
+		    // }
+
+			for(var i=0; i<provinceList.length; i++){
+		        cmbAddOption(cmbProvince, provinceList[i].name, provinceList[i]);
+		    }
+		    //cmbSelect(cmbProvince, defaultProvince);
+			
+		    //切换城市
+		    function changeProvince(){
+		        cmbCity.options.length = 0;//设置城市选项为空
+		        cmbCity.onchange = null;
+		       // if(cmbProvince.selectedIndex == -1)return;
+		        var item = cmbProvince.options[cmbProvince.selectedIndex].obj;
+		        for(var i=0; i<item.city.length; i++){
+		            cmbAddOption(cmbCity, item.city[i].name, item.city[i]);
+		        }
+		        // cmbSelect(cmbCity, defaultCity);
+		        changeCity();
+		        cmbCity.onchange = changeCity;//绑定事件方法
+		    }
+		    changeProvince();
+			cmbProvince.onchange = changeProvince;
+
+		    //切换区县
+		    function changeCity(){
+		        cmbArea.options.length = 0;
+		        //if(cmbCity.selectedIndex == -1)return;
+		        var item = cmbCity.options[cmbCity.selectedIndex].obj;
+		        for(var i=0; i<item.area.length; i++){
+		            cmbAddOption(cmbArea, item.area[i], null);
+		        }
+		        //cmbSelect(cmbArea, defaultArea);
+		    } 
+			
+		}
+		 
+		addressInit('cmbProvince', 'cmbCity', 'cmbArea', '河北', '邯郸', '肥乡县');
+		addressInit('Select1', 'Select2', 'Select3');
+	</script>
+	
+</body>
+</html>

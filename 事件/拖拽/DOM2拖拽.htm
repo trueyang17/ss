@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box1{
+            width: 80px;
+            height: 80px;
+            background: violet;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 8;
+        }
+        #box2{
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            left: 600px;
+            top: 100px;
+            border: 1px solid sienna;
+        }
+    </style>
+</head>
+<body>
+    <div id="box1"></div>
+    <div id="box2"></div>
+    <script>
+        let box1 = document.querySelector('#box1');
+        let box2 = document.querySelector('#box2');
+        box1.addEventListener('mousedown',down);
+        function down(ev) {
+            this.X = ev.clientX;
+            this.Y = ev.clientY;
+            this.boxL = box1.offsetLeft;
+            this.boxT = box1.offsetTop;
+            this._MOVE = move.bind(this);
+            this._UP = up.bind(this);
+            document.addEventListener('mousemove',this._MOVE)
+            document.addEventListener('mouseup',this._UP)
+        }
+        function move(ev) {
+            clientX = ev.clientX;
+            clientY = ev.clientY;
+            let l = clientX + this.boxL - this.X;
+            let t = clientY + this.boxT - this.Y;
+            box1.style.left = l + 'px';
+            box1.style.top = t + 'px';
+        }
+        
+        function up() {
+            document.removeEventListener('mousemove',this._MOVE);
+            document.removeEventListener('mouseup',this._UP);
+        }
+        
+    </script>
+</body>
+</html>

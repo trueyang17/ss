@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cont ul li.active{
+            background: aqua;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="cont">
+            <ul>
+                <li v-for="(item, index) in tabData" v-text="item.msg" 
+                :class={active:cur===index} @click=handle($event,index,item.id)></li>
+            </ul>
+            将tab键数据和文本内容分开写，各自均有id值，文本中内容的加载跟随tab键中的id值发生变化
+            <div v-text='txt'></div>
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script src="axios.min.js"></script>
+    <script src="axios.defaults.js"></script>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                tabData:[
+                    {id:1,msg:'体育'},
+                    {id:2,msg:'新闻'},
+                    {id:3,msg:'财经'}
+                ],
+                cur:0,
+                txt:'',
+                txtData:[
+                    {"id":1,"txt":"段落1111"},
+                    {"id":2,"txt":"段落222233"},
+                    {"id":3,"txt":"段落3333344"}
+                ]
+            },
+            created() {  
+                this.queryData(this.tabData[this.cur]['id'])
+            },
+            methods: {
+                // queryData(curID){
+                //     axios.get('./data.json').then(result =>{
+                //         let itemData = result.find(item=> parseInt(item.id) === parseInt(curID));
+                //         console.log(itemData)
+                //         if (itemData) {
+                //             this.txt = itemData.txt
+                //             return
+                //         }
+                //         return Promise.reject();
+                //     }).catch(reason=>{
+                //         this.txt = '无此信息'
+                //     })
+                // },
+
+                queryData(curID){
+                    let itemData = this.txtData.find(item=>parseInt(item.id) === parseInt(curID))
+                    this.txt = itemData.txt
+                },
+                handle(ev,index,id){
+                    this.cur = index;
+                    this.queryData(id)
+                }
+            },
+        })
+    </script>
+</body>
+</html>

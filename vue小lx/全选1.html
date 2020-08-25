@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="checkbox" v-model="selectAll" >全选/全不选
+        <br>
+        <div v-for="(item, index) in checkMsg" >
+            <input type="checkbox" v-model=item.selected> {{item.name}}
+        </div>    
+    </div>
+    <script src="vue.js"></script> 
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                checkMsg:[
+                    {name:'名字',selected:false},
+                    {name:'啊啊',selected:true},
+                    {name:'来了',selected:false}
+                ]
+            },
+            computed: {
+                selectAll:{
+                    get(){
+                        return this.checkMsg.every(item=>item.selected) 
+                    },
+                    set(val){
+                        this.checkMsg.forEach(element => { element.selected = val});
+                    }
+                }
+                
+
+            },
+        })
+    </script>
+</body>
+</html>

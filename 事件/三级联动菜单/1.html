@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" name="form1">
+        <select name="province" id="province" onchange="" >
+            <option value="">
+                ===请选择省份===
+            </option>        
+        </select>
+        <select name="city" onchange="" >
+            <option value="">
+                ===请选择城市===
+            </option>        
+        </select>
+        <select name="county" onchange="" >
+            <option value="">
+                ===请选择县区===
+            </option>        
+        </select>
+    </form> 
+    <script>
+        
+        let xhr = new XMLHttpRequest;
+		xhr.open('get','regionData.json',false);
+		xhr.onreadystatechange = ()=>{
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				provinceList = JSON.parse(xhr.response)
+			}
+		}
+		xhr.send();
+
+		let province = document.form1.province;
+        let city = document.form1.city;
+        let county = document.form1.county;
+
+        function create() {
+            for (let i = 0; i < provinceList.length; i++) {
+                let n = provinceList[i];
+                let opts1 = document.createElement('option');
+                opts1.value = n.name;
+                opts1.innerHTML = n.name;
+                province.appendChild(opts1);
+                province.oneIndex = i;
+                province.onchange = function () {              
+                    console.log(this.oneIndex)    
+                }
+                
+                for (let i = 0; i < n.city.length; i++) {
+                    let o = n.city[i];
+                    let opts2 = document.createElement('option');
+                    opts2.value = o.name;
+                    opts2.innerHTML = o.name;
+                    city.appendChild(opts2); 
+                    for (let i = 0; i < o.area.length; i++) {
+                        const p = o.area[i];
+                        let opts3 = document.createElement('option');
+                        opts3.value = p;
+                        opts3.innerHTML = p;
+                        county.appendChild(opts3);
+                    }
+
+                }
+
+                
+            }
+        }
+        create()
+
+       
+   
+
+    </script>
+</body>
+</html>

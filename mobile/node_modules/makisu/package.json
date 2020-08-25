@@ -1,0 +1,14 @@
+{
+  "name": "makisu",
+  "version": "0.0.0",
+  "description": "build your mvp, faster.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mvp"
+  ],
+  "author": "Eric Martindale",
+  "license": "MIT"
+}

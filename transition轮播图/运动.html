@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        div{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background: indianred;
+            /* transition: all 3s linear 2s; */
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <script>
+        // let box = document.querySelector('div');
+        // let changeL = document.documentElement.clientWidth - box.offsetWidth;
+        // let changeT = document.documentElement.clientHeight - box.offsetHeight
+
+        // // box.style.transform = `translate(${s}px,${s1}px)`
+        // let duration = 1000;
+        // let Ls = box.offsetLeft;
+        // let Ts = box.offsetTop;
+        // let t = 0
+        // let timer = setInterval(() => {
+        //     if (t>=duration) {
+        //         box.style.left = changeL + 'px';
+        //         box.style.top = changeT + 'px'
+        //         clearInterval(timer)
+        //         return
+        //     }
+        //     t += 16.7;
+        //     beginL = Ls + changeL/duration*t;
+        //     beginT = Ts + changeT/duration*t;
+        //     box.style.left = beginL + 'px';
+        //     box.style.top = beginT + 'px'
+        // }, 16.7);
+    </script>
+    
+    <script>
+    //动画封装
+        function animate(curEle,target = {},duration = 1000,callback) {
+            let time = 0 ,
+                begin = {},
+                change = {};
+            for (const key in target) {
+                begin[key] = parseFloat(getComputedStyle(curEle)[key]);
+                change[key] = target[key] - begin[key];
+            }    
+            let timer = setInterval(() => {
+                if (time >= duration) {
+                    clearInterval(timer);
+                    timer = null;
+                    for (const key in target) {
+                        curEle['style'][key] = target[key] + 'px';
+                    }
+                    typeof callback === 'function' ? callback() : null;
+                    return
+                }
+                time += 16.7;
+                for (const key in target) {
+                    beginL = begin[key] + change[key]/duration * time;
+                    curEle['style'][key] = beginL + 'px';
+                }
+                
+            }, 16.7);
+        }
+        let box = document.querySelector('div');
+        animate(box,{left:document.documentElement.clientWidth -box.offsetWidth})
+    </script>
+    
+    <script></script>
+</body>
+</html>

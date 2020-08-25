@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let fn1 = function (x) {
+            return x + 10;
+        }
+        let fn2 = function (x) {
+            return x * 10;
+        }
+        let fn3 = function (x) {
+            return x/ 10;
+        }
+
+        //第一种
+        function compose(...funcs) {
+            return function (...args) {
+                let len = funcs.length;
+                if (len === 0) {
+                    return args
+                }
+                if (len === 1) {
+                    return funcs[0](...args)
+                }
+                return funcs.reduce((x,y)=>{
+                    return typeof x === 'function' ? y(x(...args)) : y(x);
+                })
+            }
+        }
+
+        //第二种
+        function compose(...funcs) {
+            let len = funcs.length;
+            if (len === 0) {
+                return arg => arg;
+            }
+            if (len === 1) {
+                return funcs[0];
+            }
+            return funcs.reduce((x,y)=> (...args) => x(y(...args)))
+        }
+
+        console.log(compose()(5));
+        console.log(compose(fn1)(5));
+        console.log(compose(fn1,fn2)(5));
+        console.log(compose(fn1,fn2,fn1,fn3)(5));
+    </script>
+</body>
+</html>

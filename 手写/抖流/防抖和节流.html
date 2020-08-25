@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+            height: 111111px;
+        }
+    </style>
+</head>
+<body>
+
+    <script src="./node_modules/underscore/underscore.js"></script>
+    <script>
+        //func执行函数 wait等待时间 immediate边界触发 return可调用函数
+        function debounce(func,wait,immediate) {
+            let timeout = null;
+            return function (...args) { 
+                let context = this;
+                let now = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    if (!immediate) func.call(context,...args)
+                    timeout = null;
+                }, wait);
+                if (now) func.call(context,...args)
+            }
+        }
+ 
+
+    
+        function throttle(func,wait) {
+            let timeout = null;
+            let previous = 0;
+            return function (...args) {
+                let now = Date.now;
+                let context = this;
+                console.log(previous,now())
+                let remaining = wait - (now() - previous);
+                //自己设定的时间减去浏览器间隔时间
+                console.log(remaining)
+                if (remaining <= 0) {
+                    clearTimeout(timeout);
+                    previous = now();//事件触发时的时间
+                    console.log(previous)
+                    timeout = null;
+                    func.call(context,...args);
+                } else if(!timeout){
+                    console.log(remaining)
+                    timeout = setTimeout(() => {
+                        previous = now();
+                        console.log(previous)
+                        timeout = null;
+                        func.call(context,...args)
+                    }, remaining);
+                }
+            }
+        }
+
+
+      
+
+        function throttle1(func, wait, options) {
+            var timeout, context, args, result,
+            now = Date.now;
+            var previous = 0;
+            if (!options) options = {};
+            var later = function() {
+                previous = options.leading === false ? 0 : now();
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+            var throttled = function() {
+            var _now = now();
+            if (!previous && options.leading === false) previous = _now;
+            var remaining = wait - (_now - previous);
+            context = this;
+            args = arguments;
+            if (remaining <= 0 || remaining > wait) {
+                if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+                }
+                previous = _now;
+                result = func.apply(context, args);
+                if (!timeout) context = args = null;
+            } else if (!timeout && options.trailing !== false) {
+                timeout = setTimeout(later, remaining);
+            }
+            return result;
+            };
+
+            throttled.cancel = function() {
+                clearTimeout(timeout);
+                previous = 0;
+                timeout = context = args = null;
+            };
+            return throttled;
+        }
+
+
+        function fn() {
+            console.log('ok')
+        }
+        var _debounce = throttle(fn, 300);
+        window.onscroll = _debounce
+    </script>
+</body>
+</html>

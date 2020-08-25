@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树形菜单</title>
+    <link rel="stylesheet" href="./css/reset.min.css">
+    <style>
+        .container{
+            box-sizing: border-box;
+            margin: 20px auto;
+            padding: 10px;
+            width: 500px;
+            border: 1px dashed teal;
+            -webkit-user-select: none;
+        }
+        .level{
+            font-size: 16px;
+            margin-left: 15px;
+        }
+        .level.level0{
+            margin-left: 0;
+        }
+        .level li{
+            line-height: 30px;
+            padding-left: 15px;
+            position: relative;
+        }
+        .level li .icon{
+            position: absolute;
+            left: 0;
+            top: 9px;
+            box-sizing: border-box;
+            width: 12px;
+            height: 12px;
+            line-height: 8px;
+            text-align: center;
+            border: 1px solid #aaa;
+            background: #eee;
+        }
+        .level li .icon:after{
+            display: block;
+            content: '+';
+            font-style: normal;
+            font-size: 12px;
+        }
+        .level li .icon.open:after{
+            content: '-';
+        }
+        .level li .title{
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul class="level level0">
+            <!-- <li>
+                <a href="" class="title">前端开发基础</a>
+                <em class="icon"></em>
+                <ul class="level level1">
+                    <li>
+                        <a href="" class="title">HTML5核心知识</a>
+                        <em class="icon"></em>
+                        <ul class="level level2">
+                            <li>
+                                <a href="" class="title">新增语义化标签</a>
+                            </li>
+                            <li>
+                                <a href="" class="title">表单元素新特性</a>
+                            </li>
+                            
+                        </ul>  
+
+                    </li>
+                    <li>
+                        <em class="icon"></em>
+                        <a href="" class="title">css3核心知识</a>
+                    </li>
+                </ul>
+            </li>  -->
+        </ul>
+    </div>
+    <script src="jquery-1.11.3.js"></script>
+    <script>
+        let treeModule = (function () {
+
+            function queryData(callback) {
+                $.ajax({
+                    url:'data.json',
+                    method:'get',
+                    success: callback
+                })
+            }
+            let $level0 = $('.level0'); 
+            let count = 0;
+            function render(result) {     
+                let str = ``;
+                result.forEach(item => {
+                    let {open,children,name} = item;
+                    count++;
+                    str += `<li>
+                        <a href="" class="title">${name}</a>
+                        ${children ? `
+                        <em class="icon ${open ? 'open' : ''}"></em>
+                        <ul class="level level${count}" style='display:${open ? 'block' :'none'}'>
+                            ${render(children)}
+                        </ul>` : null}
+                    </li>`;
+                    count--;
+                });
+                return str
+            }
+            
+            return {
+                init(){
+                    queryData((result)=>{
+                       $level0.html(render(result));
+                    });
+                    $level0.click(function (ev) {
+                        let target = ev.target,
+                            $target = $(target),
+                            $next = $target.next('ul');
+                        if (target.tagName === 'EM') {
+                            //target.classList.toggle('open');
+                            $target.toggleClass('open');
+                            $next.stop().slideToggle(100)
+                        }
+                    })
+                }
+            }
+        })()
+        treeModule.init()
+    </script>
+</body>
+</html>

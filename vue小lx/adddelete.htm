@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="msg" @keyup.enter = add() >
+        <ul>
+            <li v-for="(item, index) in arr" >
+                {{index}} {{item}} <button @click = dele(index)>删除</button>
+            </li>
+        </ul>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'',
+                arr:[]
+            },
+            methods: {
+                add(){
+                    console.log(23)
+                    this.arr.push(this.msg);
+                    this.msg = '';
+                 
+                },
+                dele(i){
+                    this.arr = this.arr.filter((item,index)=>{
+                        return i !== index
+                    })
+                }
+            },
+        })
+        let ary = [23,43,12];
+        let dd = ary.push('sa','saas');
+        console.log(dd,ary)
+    </script>
+</body>
+</html>

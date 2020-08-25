@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+            height: 211212343434px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function debounce(func,wait,immediate) {
+            let result = null,
+                timeout = null;
+            return function (...args) {
+                let context = this;
+                let now = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    if(!immediate) result = func.call(context,...args);
+                    timeout = null
+                }, wait);
+                if (now) result = func.call(context,...args)
+            }
+        }
+
+        function throttle(func,wait) {
+            let timeout = null;
+            let previous = 0;
+            let result = null;
+            return function (...args) {
+                let context = this;
+                let now = Date.now;
+                let remain = wait - (now() - previous);
+                if (remain <= 0) {
+                    console.log(1)
+                    clearTimeout(timeout);
+                    previous = now();
+                    timeout = null;
+                    result = func(context,...args);
+                }else if(!timeout){
+                    timeout = setTimeout(() => {
+                        console.log(2)
+                        previous = now();
+                        timeout = null;
+                        result = func(context,...args)
+                    }, remain);
+                }
+            }
+        }
+
+        window.onscroll = debounce(function () {
+            console.log(23)
+        },400)
+    </script>
+</body>
+</html>

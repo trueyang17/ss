@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" name="form">
+        <select name="province" > </select>
+        <select name="city" > </select>
+        <select name="area" > </select>
+    </form>
+
+    <script>
+        let xhr = new XMLHttpRequest;
+		xhr.open('get','regionData.json',false);
+		xhr.onreadystatechange = ()=>{
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				provinceList = JSON.parse(xhr.response)
+			}
+		}
+		xhr.send();
+
+        let province = document.form.province;
+        let city = document.form.city;
+        let area = document.form.area;
+
+        /*
+        options:是整个select下option的集合，可以通过add和remove方法添加或删除项；
+        selectedIndex 是点击单个option的索引值； 
+        */
+        function addOptions(add,list,obj) {
+            option = document.createElement('option');
+            option.value = list;
+            option.innerHTML = list;
+            add.options.add(option);
+            option.obj = obj;
+        }
+        for (let i = 0; i < provinceList.length; i++) {
+            addOptions(province,provinceList[i].name,provinceList[i])
+        }
+        /*
+        省级数据加载完以后在其子元素option上添加一个自定义属性并把要渲染的市级数据添加到上面，县级数据亦是如此，层层递进。
+        */
+        function changeProvince() {
+            city.options.length = 0;//每点击一次省级数据，市级数据就清空一次，然后再重新写入数据
+            city.onchange = null;
+            item = province.options[province.selectedIndex].obj;
+            for (let i = 0; i < item.city.length; i++) {
+                addOptions(city,item.city[i].name,item.city[i]) 
+            }
+            changeCity()
+            city.onchange = changeCity;
+        }
+        changeProvince();
+        province.onchange = changeProvince;
+
+        function changeCity() {
+            area.options.length = 0;
+            item = city.options[city.selectedIndex].obj;
+            for (let i = 0; i < item.area.length; i++) {
+                addOptions(area,item.area[i])
+            }
+        }
+        
+        
+    </script>
+</body>
+</html>

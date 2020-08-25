@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .cont{
+            margin: 30px auto;
+            width: 505px;
+            
+        }
+        ul li{
+            list-style: none;
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid sienna;
+            float: left;
+            margin-right: 30px;
+        }
+        ul:after{
+            content: '';
+            height: 0;
+            display: block;
+            clear: both;
+            visibility: hidden;
+        }
+        .cont .active{
+            background: springgreen;
+        }
+        .cont div{
+            width: 500px;
+            height: 300px;
+            text-align: center;
+            line-height: 300px;
+            font-size: 50px;
+            border: 1px solid sienna;
+            display: none;
+        }
+        .cont .box{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="cont">
+            <ul>
+                <li v-for="(item, index) in tabData" :class={active:cur===index} @click=cur=index
+                v-text="item.msg"></li>
+            </ul>
+            <div v-for="(item, index) in tabData" :class={box:cur===index}
+             v-text="item.txt"></div>
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                tabData:[
+                    {id:1,msg:'新闻',txt:'段落111'},
+                    {id:2,msg:'政治',txt:'段落222222'},
+                    {id:3,msg:'时事',txt:'段落333133'}
+                ],
+                cur:0
+            },
+
+        })
+    </script>
+</body>
+</html>

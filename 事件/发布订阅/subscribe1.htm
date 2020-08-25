@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let sub = (function anonymous() {
+            class subscribe{
+            constructor(){
+                this.pond = [];
+            }
+            add(func){
+                let flag = this.pond.some(item=>{
+                    return item === func
+                })
+                !flag ? this.pond.push(func) : null
+            }
+            remove(func){
+                let pond = this.pond;
+                for (let i = 0; i < pond.length; i++) {
+                    if (pond[i] === func) {
+                        pond[i] = null;
+                        return
+                    }
+                }
+            }
+            fire(...args){
+                let pond = this.pond;
+                //let args = [].slice.call(arguments,0)
+                for (let i = 0; i < pond.length; i++) {
+                    let n = this.pond[i];
+                    if (typeof n !== 'function') {
+                        pond.splice(i,1);
+                        i--;
+                        continue;
+                    }
+                    n.call(this,...args)
+                }
+            }
+        }
+            return function sub() {
+                return new subscribe();
+            }        
+        })()
+        let f = sub();
+        console.log(f)
+        function func1() {
+            console.log(1)
+        }
+        function func2(a1) {
+            console.log(a1)
+        }
+        f.add(func1,func2)
+        f.add(func2)
+        
+        f.fire(2)
+        f.remove(func1)
+        f.fire(2)
+    </script>
+</body>
+</html>

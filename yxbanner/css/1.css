@@ -1,0 +1,63 @@
+.container{
+    width: 1200px;
+    height: 400px;
+    position: relative;
+    margin: 30px auto;
+}
+.container .wrapper{
+    width: 1200px;
+    height: 400px;
+    position: absolute;
+}
+.container .wrapper .slide{
+    width: 1200px;
+    height: 400px;
+    position: absolute;
+    opacity: 0;
+}
+.container .wrapper .slide:nth-of-type(1){
+    opacity: 1;
+}
+.container .wrapper .slide img{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.container .pagination{
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    bottom: 20px;
+    padding: 10px 15px 10px 0;
+    border-radius: 50px;
+    background: rgba(50, 50, 50, 0.5);
+    left: 50%;
+    transform: translateX(-50%);
+}
+.container .pagination li{
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: aliceblue;
+    margin-left: 15px;
+}
+.container .pagination li.active{
+    background: rgb(104, 10, 10);
+}
+.container .arrow{
+    position: absolute;
+    display: none;
+    width: 50px;
+    height: 50px;
+    background: url(pre.png);
+    top: 50%;
+    transform: translateY(-50%);
+}
+.container .changeRight{
+    right: 0;
+    background-position:67px ;
+}
+.container:hover a{
+    display: block;
+    z-index: 3;
+}

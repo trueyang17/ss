@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.min.css">
+    <style>
+        .container{
+            margin: 30px auto;
+            box-sizing: border-box;
+            width: 500px;
+            padding: 10px;
+            border: 1px dashed darkblue;
+            -webkit-user-select: none;
+        }
+        .level{
+            font-size: 16px;
+            margin-left: 15px;
+        }
+        .level.level0{
+            margin: 0;
+        }
+        .level li{
+            line-height: 30px;
+            padding-left: 15px;
+            position: relative;
+        }
+        .level li .icon{
+            display: block;
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            left: 0;
+            top: 9px;
+            border: 1px solid olive;
+            background: tan;
+            line-height: 10px;
+        }
+        .level li .icon:after{
+            display: block;
+            content: '+';
+            text-align: center;
+            position: absolute;
+            font-style: normal;
+        }
+        .level li .open.icon:after{
+            content: '-';
+            left: 2px;
+        }
+        .level li .title{
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul class="level level0">
+            
+        </ul>
+    </div>
+    <script src="js/axios.js"></script>
+    <script>
+        axios.interceptors.response.use(result => result.data);
+        axios.get('data.json')
+        .then(res => {
+            let count = 0;
+            function render(res) {
+                let str = ``;
+                res.forEach(item => {
+                    let {name,open,children} = item;
+                    count++;
+                    str += `<li>
+                                <a href="" class="title">${name}</a>        
+                                ${children ? `
+                                <em class="icon ${open ? 'open' : ''}"></em>   
+                                <ul class="level level${count}" 
+                                style='display:${open ? 'block' : 'none'}'>
+                                    ${render(children)}
+                                </ul>` : ''}                             
+                            </li>`
+                    count--
+                });   
+                return str 
+            }
+            let level0 = document.querySelector('.level0');
+            level0.innerHTML = render(res);
+            level0.onclick = function (ev) {
+                target = ev.target;
+                next = target.nextElementSibling;
+                if (target.tagName === 'EM') {
+                    target.classList.toggle('open');
+                    if (/open/i.test(target.className)) {
+                        next.style.display = 'block';
+                    
+                    } else{
+                        next.style.display = 'none';  
+                        
+                    }  
+                }
+            }
+        })
+        
+    </script>
+</body>
+</html>

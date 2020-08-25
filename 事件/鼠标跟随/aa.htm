@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box1{
+            width: 100px;
+            height: 100px;
+            border: 2px solid maroon;
+            margin-left: 100px;
+        }
+        .big{
+            width: 500px;
+            height: 500px;
+            background: royalblue;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="box1"></div>
+    </div>
+    
+    <script>
+        let box = document.querySelector('#box');
+        let box1 = document.querySelector('#box1');
+
+        box1.onmouseenter = function (ev) {
+            let div = document.createElement('div');
+            div.className = 'big';
+            box.appendChild(div);
+            let big = document.getElementsByClassName('big')[0];
+            big.style.left = ev.clientX + 'px';
+            big.style.top = ev.clientY + 'px';
+            box1.onmousemove = function (ev) {
+                big.style.left = ev.clientX + 10 + 'px';
+                big.style.top = ev.clientY + 10 + 'px';
+            }
+            box1.onmouseleave = function () {
+                box.children[1].remove()
+            }
+        }
+    </script>
+</body>
+</html>

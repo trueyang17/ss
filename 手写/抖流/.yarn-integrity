@@ -1,0 +1,16 @@
+{
+  "systemParams": "win32-ia32-72",
+  "modulesFolders": [
+    "node_modules"
+  ],
+  "flags": [],
+  "linkedModules": [],
+  "topLevelPatterns": [
+    "underscore@^1.10.2"
+  ],
+  "lockfileEntries": {
+    "underscore@^1.10.2": "https://registry.npm.taobao.org/underscore/download/underscore-1.10.2.tgz?cache=0&sync_timestamp=1585605854253&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Funderscore%2Fdownload%2Funderscore-1.10.2.tgz#73d6aa3668f3188e4adb0f1943bd12cfd7efaaaf"
+  },
+  "files": [],
+  "artifacts": {}
+}

@@ -1,0 +1,71 @@
+body,html{
+    background: #eee;
+}
+.content{
+    margin: 30px auto;
+    width: 1200px;
+}
+.header{
+    height: 50px;
+    font-size: 18px;
+    background: #fff;
+}
+.header div{
+    margin: 0 10px;
+}
+.header div,a{
+    display: block;
+    float: left;
+    line-height: 50px;
+}
+.header a{
+    margin-right: 30px;
+    position: relative;
+}
+
+.header a i{
+    display: block;
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    right: -15px;
+}
+.header a i.up{    
+    top: 12.5px;
+    border: 5px solid gray;
+    border-color: transparent transparent gray;
+}
+.header a i.up.active{    
+    top: 12.5px;
+    border: 5px solid gray;
+    border-color: transparent transparent red;
+}
+.header a i.down{
+    top: 27.5px;
+    border: 5px solid gray;
+    border-color: gray transparent transparent ;
+}
+.header a i.down.active{
+    top: 27.5px;
+    border: 5px solid gray;
+    border-color: red transparent transparent ;
+}
+ul{
+    margin-top: 30px;
+}
+ul li{
+    width: 200px;
+    background: #fff;
+    float: left;
+    padding: 10px;
+    margin: 0 15px 15px 0;
+}
+ul li img{
+    width: 100%;
+    display: block;
+}
+ul li span{
+    display: block;
+    font-size: 14px;
+    margin: 10px 0 0 10px;
+}

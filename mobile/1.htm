@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet/less" href="./css/1.less">
+    <!-- <link rel="stylesheet/less" href="./css1/animate.css"> -->
+    <script src="./node_modules/less/dist/less.js"></script>
+</head>
+<body>
+    <audio src="xiaokfy.mp3" id="audio"></audio>
+    <div class="box">
+        <!-- <img src="./img/pic.png" alt=""> -->
+    </div>
+    <div class="box1"></div>
+    <div class="box3 animate__animated animate__headShake"></div>
+    <button id="btn">按钮</button> 
+    <button id="btn1">暂停</button>
+    <script>
+        console.log(audio)
+        btn.onclick = function (ev) {
+            audio.play()
+        }
+        btn1.onclick = function () {
+            audio.pause()
+        }
+    </script>
+</body>
+</html>

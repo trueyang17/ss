@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="checkbox" v-model="selectedAll">全选/不选
+        <hr>点击选中以后v-model会把value值自动添加到checkList数组中，当数组的长度与checkMsg长度相同时就选中全选；点击全选把所有value值都添加到checkList数组中
+        <div v-for="(item, index) in checkMsg" >
+            <input type="checkbox" :value=item.value v-model="checkList" >{{item.name}}          
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data: {
+                checkMsg:[
+                    {name:'名字',value:'a'},
+                    {name:'啊啊',value:'b'},
+                    {name:'来了',value:'c'}
+                ],
+                checkList:[]
+            },
+            computed: {
+                selectedAll:{
+                    get(){
+                        console.log(this.checkList.length)
+                        return this.checkList.length === this.checkMsg.length 
+                    },
+                    set(val){
+                        console.log(val)
+                        if(val){
+                            this.checkMsg.forEach(element => {                      
+                                this.checkList.push(element.value)
+                            });    
+                            return
+                        }
+                        this.checkList = []
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+</html>

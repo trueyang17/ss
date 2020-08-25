@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            position: relative;
+            margin: 30px auto;
+            width: 400px;
+            height: 300px;
+            border: 1px solid olive;
+        }
+        .box em{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            font-style: normal;
+            border: 1px solid yellowgreen;
+        }
+        .box em:after{
+            display: block;
+            width: 20px;
+            height: 20px;
+            content: '+';
+            line-height: 18px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <em></em>
+    </div>
+    
+</body>
+</html>

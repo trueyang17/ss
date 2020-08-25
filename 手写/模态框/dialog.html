@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .dialog{
+            /* display: none; */
+            position: fixed;
+            top:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+            z-index:9998;
+            background: rgba(0, 0, 0, .8);
+            /* opacity:0; */
+            transition: opacity .3s
+        }
+        .dia-main{
+            position:absolute;
+            top:100px;
+            left:50%;
+            /* margin-left:-200px; */
+            z-index:9999;
+            width:400px;
+            background:#fff;
+            border-radius:3px;
+            overflow:hidden;
+            /* transform:translateY(-1000px); */
+            transition: transform .3s
+            
+        }
+        .dia-header{
+            position: relative;
+            box-sizing: border-box;
+            padding: 0 10px;
+            height: 40px;
+            line-height: 40px;
+            background: #2299EE;
+            cursor: move;
+        }
+        .dia-title{
+            font-size: 18px;
+            font-weight: normal;
+            color: #fff;
+        }
+        .dia-close{
+            position: absolute;
+            right: 10px;
+            top:50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            font-style: normal;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+        }
+        .dia-body{
+            padding: 30px 10px;
+            line-height: 30px;
+            font-size: 16px;
+        }
+        .dia-footer{
+            text-align: right;
+            padding: 10px 10px;
+            border-top: 1px solid #EEE;
+        }
+        .dia-confirm,
+        .dia-cancel{
+            margin: 0 5px;
+            padding: 0 15px;
+            height: 28px;
+            line-height: 28px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .dia-confirm{
+            color: #fff;
+            background: #2299EE;
+        }
+        .dia-cancel{
+            color: #000;
+            background: #DDD;
+        }
+    </style>
+</head>
+<body>
+    <div class="dialog">
+        <div class="dia-main"> 
+            <div class="dia-header">
+                <h3 class="dia-title">系统温馨提示</h3>
+                <i class="dia-close">X</i>
+            </div>
+            <div class="dia-body">
+                用户名密码不匹配，请重新输入
+            </div>
+            <div class="dia-footer">
+                <button class="dia-confirm">确认</button>
+                <button class="dia-cancel">取消</button>
+            </div>
+        </div>
+    </div>
+    <script src="dialog.js"></script>
+    
+</body>
+</html>

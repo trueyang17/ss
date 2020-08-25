@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cont li.active{
+            background: aqua;
+        }
+        .cont div{
+            display: none;
+        }
+        .cont div.box{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="cont">
+            <ul>
+                <li v-for="(item, index) in tabData" v-text="item.msg" 
+                :class={active:cur===index} @click=handle :index=index></li>
+            </ul>
+            重新再设置一个自定义属性index，并把v-for指令中的index赋值给自定义的index，然后再与数据cur比较若相同则选中,难点在于事件元素和自定义属性获取
+            <div v-for="(item, index) in tabData" v-text="item.txt" 
+            :class={box:cur===index}></div>
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                tabData:[
+                    {id:1,msg:'体育',txt:'段落11111'},
+                    {id:2,msg:'新闻',txt:'段落2222'},
+                    {id:3,msg:'财经',txt:'段落333333'}
+                ],
+                cur:0
+            },
+            methods: {
+                handle(ev){ 
+                    let tarTag = ev.target,
+                    tarName = tarTag.tagName;
+                    console.log(tarTag,tarName)
+                    if (tarName === 'LI') {
+                        this.cur = parseInt(tarTag.getAttribute('index'))
+                        console.log(this.cur)
+                    }
+                }
+            },
+
+        })
+    </script>
+</body>
+</html>

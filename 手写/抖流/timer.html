@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">暂停</button>
+    <script>
+        //清除定时器
+        let n = 0,
+            timer1 = null; 
+        function createTimer() { 
+            timer1 = setInterval(() => {
+                console.log(n++)
+
+            }, 1090);
+        };
+        createTimer();
+        btn.onclick = function () { 
+            if (timer1) {
+                clearInterval(timer1)
+                timer1 = null; 
+                btn.innerText = '开始';  
+                return;    
+            }
+              
+            createTimer()
+            btn.innerText = '暂停';  
+            
+        }
+    </script>
+</body>
+</html>

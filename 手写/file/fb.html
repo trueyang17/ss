@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function EventBus() {
+            this.pond = {};
+        }
+
+        EventBus.prototype.add = function (type,func) {
+            let pond = this.pond;
+            if (!pond[type]) pond[type] = [];
+            //增加方法,去重
+            //1.for循环去重
+            let pondT = pond[type];//pondT就是可以添加n件事，为了复用
+            // for (let i = 0; i < pondT.length; i++) {
+            //     if (pondT[i] === func) {
+            //         return
+            //     }  
+            // }
+            // pondT.push(func)
+            //2.includes去重
+            !pondT.includes(func) ? pondT.push(func) : null;
+        };
+
+        EventBus.prototype.remove = function (type,func) {
+            let pondT = this.pond[type];
+            if(!pondT) return;
+            pondT.forEach((ele,i,ary) => {
+                if (ele === func) {
+                    ary[i] = null;
+                    return;
+                }
+            });
+        };
+
+        EventBus.prototype.fire = function (type) {
+            let pondT = this.pond[type] || [];
+            let args = [].slice.call(arguments,1);
+            for (let i = 0; i < pondT.length; i++) {
+                if (typeof pondT[i] !== 'function') {
+                    pondT.splice(i,1);
+                    i--;
+                    continue;
+                }
+                pondT[i].apply(this,args)
+            }
+        }
+
+        
+
+        function a1() {
+            console.log(1)
+        }
+        function a2() {
+            console.log(2)
+        }
+        function a3() {
+            console.log(3)
+            f.remove('obj',a1)
+            f.remove('obj',a2);
+        }
+        function a4() {
+            console.log(4)
+        }
+        function a5() {
+            console.log(5)
+        }
+        function a6() {
+            console.log(6)
+        }
+        
+
+        let f = new EventBus()
+        console.log(f)
+        f.add('obj',a1);
+        f.add('obj',a2);
+        f.add('obj',a3);
+        f.add('obj',a4);
+        f.add('obj',a5);
+        f.add('obj',a6);
+
+        
+        f.fire('obj')
+        // f.fire('obj')
+
+
+
+
+
+
+    </script>
+</body>
+</html>

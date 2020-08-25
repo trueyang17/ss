@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .tagbox{
+            width: 200px;
+
+        }
+        .tag{
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            width: 100%;
+            height: 50px;
+            border-bottom: 1px solid olivedrab;
+            background: firebrick;
+        }
+        .box{
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            width: 100%;
+            height: 0px;
+            overflow: hidden;
+            transition: all 1s;
+            background: goldenrod;
+        }
+        .item{
+            line-height: 50px;
+            font-size: 20px;
+            width: 100%;
+        }
+        .special{
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tagbox">
+        <div class="tag" >水果 </div>
+        <div class="box">
+            <div class="item">香蕉</div>
+            <div class="item">苹果</div>
+            <div class="item">橘子</div>
+        </div>
+        <div class="tag" >蔬菜 </div>
+        <div class="box">
+            <div class="item">黄瓜</div>
+            <div class="item">青菜</div>
+            <div class="item">茄子</div>
+        </div>
+        <div class="tag" >饮品 </div>
+        <div class="box">
+            <div class="item">卡布奇诺</div>
+            <div class="item">红茶</div>
+            <div class="item">芬达</div>
+        </div>
+    </div>
+    <script>
+        let boxs = document.querySelectorAll('.box');
+        let tags = document.querySelectorAll('.tag');
+        for (let i = 0; i < tags.length; i++) {
+            tags[i].index = i;
+            tags[i].onclick = function () {
+                if (document.querySelector('.special')) {
+                    if (boxs[this.index].classList.contains('special')) {
+                        boxs[this.index].classList.remove('special')    
+                    } else {
+                        document.querySelector('.special').classList.remove('special');
+                        boxs[this.index].classList.add('special')    
+                    }
+                } else {
+                    boxs[this.index].classList.add('special')
+                }
+            }
+        }
+    </script>
+</body>
+</html>

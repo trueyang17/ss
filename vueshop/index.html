@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>珠峰培训</title>
+	<link rel="stylesheet" href="reset.min.css">
+	<link rel="stylesheet" type="text/css" href="price.css" />
+</head>
+<body>
+	<div id="app">
+		<div class="wrap">
+			<div class="box">
+				<ul class="list">
+					<li v-for="(item, index) in list" >
+						<i  @click=handle('minus',index)></i>
+						<em>{{item.count}}</em>
+						<i  @click=handle('plus',index)></i>
+						<span>
+							单价：<strong>{{item.price}}元 </strong> 
+							小计：<strong>{{sum(item.count,item.price) | toF }}元</strong>
+						</span>
+					</li>
+				</ul>
+				<div class="info">
+					<span>商品公合计：<em> {{total}} </em>件</span>
+					<span>共花费了：<em> {{totalPrice | toF }} </em>元</span>
+					<br />
+					<br />
+					<span>其中最贵的商品单价是：<em> {{maxPrice}} </em>元</span>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<script src="vue.js"></script>
+	<script>
+		let vm = new Vue({
+			el:'#app',
+			data:{
+				list:[{
+					id:1,
+					count:0,
+					price:12.32
+				},{
+					id:2,
+					count:0,
+					price:8.41
+				},{
+					id:1,
+					count:0,
+					price:22.54
+				},{
+					id:1,
+					count:0,
+					price:17.89
+				},{
+					id:1,
+					count:0,
+					price:15.65
+				}]
+			},
+			methods: {
+				sum(count,price){					
+					return count * price
+				},
+				handle(type,activeIndex){
+					this.list = this.list.map((item,index)=>{
+						if (activeIndex === index) {
+							if (type === 'minus') {
+								item.count--;
+								item.count <= 0 ? item.count = 0 : null;
+							} else if(type === 'plus'){
+								item.count++;
+							}
+						}
+						return item
+					})
+				},
+				
+			},
+			computed: {
+				total(){
+					return this.list.reduce((prev,next)=>{
+						return prev + next.count
+					},0)
+				},
+				totalPrice(){
+					return this.list.reduce((prev,next)=>{
+						return prev + next.count * next.price;
+					},0)
+				},
+				maxPrice(){
+					// let arr = [0];
+					// this.list.forEach((item,index)=>{
+					// 	if (item.count > 0) {
+					// 		arr.push(item.price)
+					// 	}
+					// })
+					// return Math.max(...arr)
+					
+					let arr = this.list.filter(item=>{
+						if (item.count > 0) {
+							return item
+						}
+					}).map(item=>{
+						return item.price
+					})
+					return arr.length === 0 ? 0 : Math.max(...arr)
+				}
+			},
+			filters:{
+				toF(val){
+					return val.toFixed(2)
+				}
+			}
+		})
+	</script>
+</body>
+</html>

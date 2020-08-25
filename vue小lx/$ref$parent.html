@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <parent ></parent>
+    </div>
+
+    <template id="parent">
+        <div >
+            <span> parent: {{num}} </span> 
+            <button @click=getChild>parent</button>
+            <child ref=txt ></child>
+        </div>
+    </template>
+
+    <template id="child">
+        <div>
+            <button @click=getParent >child</button>
+            <div v-show='show' >dfffffffffffffffffffffffffffffffffffffffffffffffffff</div>
+        </div>
+    </template>
+
+    <script src="vue.js"></script>
+    <script>
+        
+        let child = {
+            template:'#child',
+            data() {
+                return {
+                    show:true
+                }
+            },
+            methods: {
+                getParent(){
+                    this.$parent.num++;
+   
+                }
+            },
+        }
+        let parent = {
+            template:'#parent',
+            data() {
+                return {
+                    num:0
+                }
+            },
+            components:{
+                child
+            },
+            methods: {
+                getChild(){
+                    // console.log( this.$children)
+                    // this.$children[0].show = !this.$children[0].show
+                    this.$refs.txt.show = !this.$refs.txt.show
+                    console.log(this.$refs.txt)
+                }
+                
+            },
+        }
+        let vm = new Vue({
+            el:'#app',
+            components:{
+                parent
+            }
+        })
+    </script>
+</body>
+</html>

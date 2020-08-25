@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>珠峰培训</title>
+	<style type="text/css">
+		body {
+			font-size: 14px;
+			font-family: "Lantinghei SC Extralight", Arial;
+		}
+
+		ul {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		img {
+			vertical-align: top;
+		}
+
+		#wrap {
+			width: 760px;
+			height: 260px;
+			margin: 100px auto;
+			padding: 145px 120px 95px;
+			/* background: url(img/bg.jpg) no-repeat 0 0; */
+		}
+
+		#section {
+			width: 760px;
+			height: 260px;
+			-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, .2);
+			box-shadow: 0px 0px 4px rgba(0, 0, 0, .2);
+		}
+
+		#choose {
+			width: 760px;
+			height: 50px;
+			margin: 0 auto;
+			background: url(img/nav_bg.png) no-repeat 0 0;
+			line-height: 50px;
+			text-indent: 21px;
+		}
+
+		#type {
+			width: 100%;
+			height: 210px;
+			background: url(img/type_bg.png) no-repeat 0 0;
+			padding: 17px 0 16px 28px;
+		}
+
+		#type li {
+			height: 44px;
+			color: #8a8a8a;
+			line-height: 44px;
+		}
+
+		#type a {
+			margin: 0 12px 0 11px;
+			color: #000;
+		}
+
+		#choose mark {
+			position: relative;
+			display: inline-block;
+			height: 24px;
+			line-height: 24px;
+			border: 1px solid #28a5c4;
+			color: #28a5c4;
+			margin: 12px 5px 0;
+			background: none;
+			padding: 0 30px 0 6px;
+			text-indent: 0;
+		}
+
+		#choose mark a {
+			position: absolute;
+			top: 3px;
+			right: 2px;
+			display: inline-block;
+			width: 18px;
+			height: 18px;
+			background: #28a5c4;
+			color: #fff;
+			line-height: 18px;
+			font-size: 16px;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div id="wrap">
+			<section id="section">
+				<nav id="choose">
+					你的选择：
+					<mark v-for="(item, index) in chooseData" >
+						{{item.name}}
+						<a href="javascript:;" @click=removeData(index) > x</a>
+					</mark>
+				</nav>
+				<ul id="type">
+					<li v-for="(item, index) in typeData" >
+						{{item.name}}：
+						<a href="javascript:;" v-for="(cur, index) in item.content" @click=addData(cur,item.id)>
+						{{cur}}	
+						</a>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>	
+	<script src="vue.js"></script>
+	<script>
+		let chooseData = [{
+			typeId: 1,
+			name: '华为'
+		}];
+		let typeData = [{
+			id: 1,
+			name: '品牌',
+			content: ['苹果', '华为', '小米', '锤子', '魅族', '三星', 'OPPO']
+		}, {
+			id: 2,
+			name: '尺寸',
+			content: ["3.0英寸以下", "3.0-3.9英寸", "4.0-4.5英寸", "4.6-4.9英寸", "5.0-5.5英寸", "6.0英寸以上"]
+		}, {
+			id: 3,
+			name: '系统',
+			content: ["安卓 ( Android )", "苹果 ( IOS )", "微软 ( WindowsPhone )", "其他"]
+		}, {
+			id: 4,
+			name: '网络',
+			content: ["联通3G", "双卡单4G", "双卡双4G", "联通4G", "电信4G", "移动4G"]
+		}];
+		let vm = new Vue({
+			el:'#app',
+			data:{
+				chooseData,
+				typeData
+			},
+			methods: {
+				addData(a,b){
+					console.log(a,b)
+					this.chooseData = this.chooseData.filter(item=> item.typeId !== b );
+					let obj = {
+						typeId: b,
+						name: a
+					}
+					this.chooseData.push(obj);
+					this.chooseData.sort((a,b)=> a.typeId - b.typeId);
+				},
+				removeData(a){
+					console.log(a)
+					this.chooseData = this.chooseData.filter((item,index)=> index !== a );
+				}
+			}
+		})
+	</script>
+</body>
+</html>

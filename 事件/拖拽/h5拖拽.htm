@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box1{
+            width: 80px;
+            height: 80px;
+            background: violet;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 7;
+        }
+        #box2{
+            width: 300px;
+            height: 300px;
+            position: relative;
+            left: 600px;
+            top: 100px;
+            border: 1px solid sienna;
+        }
+    </style>
+</head>
+<body>
+    <div id="box1" draggable="true"></div>
+    <div id="box2"></div>
+    <script>
+        let box1 = document.querySelector('#box1');
+        let box2 = document.querySelector('#box2');
+        function down(ev) {
+            this.X = ev.clientX;
+            this.Y = ev.clientY;
+            this.boxL = box1.offsetLeft;
+            this.boxT = box1.offsetTop;
+            this._MOVE = move.bind(this);
+            this._UP = up.bind(this);
+            document.addEventListener('mousemove',this._MOVE)
+            document.addEventListener('mouseup',this._UP)
+        }
+        
+        function move(ev) {
+            clientX = ev.clientX;
+            clientY = ev.clientY;
+            let l = clientX + this.boxL - this.X;
+            let t = clientY + this.boxT - this.Y;
+            box1.style.left = l + 'px';
+            box1.style.top = t + 'px'; 
+        }
+        function up() {
+            document.removeEventListener('mousemove',this._MOVE);
+            document.removeEventListener('mouseup',this._UP);
+            let minL = box2.offsetLeft;
+            let maxL = box2.offsetLeft + box2.offsetWidth - this.offsetWidth;
+            let minT = box2.offsetTop;
+            let maxT = box2.offsetTop + box2.offsetHeight - this.offsetHeight;
+            let curL = parseInt(getComputedStyle(this).left);
+            let curT = parseInt(getComputedStyle(this).top);
+            console.log(box2.offsetTop);
+            if ((curL>minL && curL < maxL) && (curT>minT && curT < maxT) ) {
+                box2.appendChild(box1);
+                this.style.left = 0;
+                this.style.top = 0;     
+                this.removeEventListener('mousedown',down);
+                return
+            }
+            this.style.left = 0;
+            this.style.top = 0; 
+        }
+        //box1.addEventListener('mousedown',down);
+    </script>
+
+    <script>
+        /*
+        要拖动的元素必须设置属性 draggable = true
+        dragstart目标开始拖动时；
+        drag目标拖动时触发；
+        dragend目标完成拖动触发
+
+        ondragenter - 当被鼠标拖动的对象进入其容器范围内时触发此事件
+        ondragover - 当某被拖动的对象在另一对象容器范围内拖动时触发此事件
+        ondragleave - 当被鼠标拖动的对象离开其容器范围内时触发此事件
+
+        drop在一个拖动过程中，释放鼠标键时触发此事件最终状态
+        */
+        box1.ondragstart = function (ev) {
+            ev.dataTransfer.setData('text/plain',ev.target.id);
+        }
+        box2.ondragover = function (ev) {
+            ev.preventDefault()
+        }
+        box2.ondrop = function (ev) {
+            ev.preventDefault();
+            let _ID = ev.dataTransfer.getData('text/plain');
+            let _ELE = document.getElementById(_ID);
+            box2.appendChild(_ELE);
+        }
+    </script>
+</body>
+</html>

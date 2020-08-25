@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;padding: 0;
+        }
+        ul{
+            width: 1200px;height: 50px;margin: 30px auto;
+        }
+        li{
+            list-style: none;font-size: 20px;line-height: 50px;
+            position: relative;float: left;margin: 0 30px;
+        }
+        li:after{
+            content: '';display: block;
+            width: 0;height: 0;position: absolute;border: 5px solid transparent;
+            border-bottom-color: gray;right: -15px;top: 12.5px
+        }
+        li.up:after{
+            content: '';display: block;
+            width: 0;height: 0;position: absolute;border: 5px solid transparent;
+            border-bottom-color: red;right: -15px;top: 12.5px
+        }
+        li:before{
+            content: '';display: block;
+            width: 0;height: 0;position: absolute;border: 5px solid transparent;
+            border-top-color: gray;right: -15px;bottom: 12.5px
+        }
+        li.down:before{
+            content: '';display: block;
+            width: 0;height: 0;position: absolute;border: 5px solid transparent;
+            border-top-color: red;right: -15px;bottom: 12.5px
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>上架时间</li>
+        <li>热度</li>
+        <li>价格</li>
+    </ul>
+    <script>
+        var oLis = document.getElementsByTagName('li');
+        for (let i = 0; i < oLis.length; i++) {
+            oLis[i].flag = -1;
+            oLis[i].onclick = function () {
+                this.flag *= -1;
+                console.log(this.flag);
+                for (let j = 0; j < oLis.length; j++) {
+                    if (oLis[j] !== this) {//把没有点击的样式清除
+                        oLis[j].classList.remove('up');
+                        oLis[j].classList.remove('down');
+                        oLis[j].flag = -1;
+                    }                      
+                }
+                if (this.flag === 1) {
+                    this.classList.add('up');
+                    this.classList.remove('down');
+                } else {
+                    this.classList.remove('up');
+                    this.classList.add('down');
+                }
+            }
+        }
+    </script>
+</body>
+</html><SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

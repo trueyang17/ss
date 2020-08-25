@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li>第1个</li>
+        <li>第2个</li>
+        <li>第3个</li>
+    </ul>
+    <p></p>
+    <button>添加</button>
+    <script src="jquery-1.11.3.js"></script>
+    <script>
+        let $ul = $('ul');
+        let $oLis = $ul.find('li');
+        // $oLis.each((index,item)=>{
+        //     $item = $(item);
+        //     console.log($item)
+        //     $item.click(()=>{
+        //         alert( '这是第'+(1 + index) +'个li标签')
+        //     })
+        // })
+        $ul.click((ev)=>{
+            let target = ev.target;
+            $target = $(target);
+            if (target.tagName === 'LI') {
+                alert('这是第'+ ($target.index()+1) +'个li标签')
+            }
+        })
+        let $oBtn = $('button');
+        let count = 3
+        $oBtn.click(()=>{
+            for (let i = 0; i < 4; i++) {            
+                count++;
+                $("ul").append(`<li>第${count}个</li>`);        
+            }
+        })
+       
+    </script>
+</body>
+</html>

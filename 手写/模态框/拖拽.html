@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        .box{
+           width: 100px;
+           height: 130px;
+           background: chartreuse;
+           position: absolute;
+        }
+        .box1{
+            width: 100px;
+            height: 10px;
+            background: blueviolet;
+        }
+        .box2{
+            width: 80px;
+            height: 80px;
+            border: 10px solid silver;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="box1"></div>
+        <div class="box2">漯河职业技术学院就是垃圾</div>
+    </div>
+    <script>
+        var box = document.getElementsByClassName('box')[0];
+        var box1 = document.getElementsByClassName('box1')[0];
+
+        box1.onmousedown = function (ev) { 
+     
+            this.startX = ev.clientX;
+            this.startY = ev.clientY;
+            this.startL = box.offsetLeft;
+            this.startT = box.offsetTop;
+            this._move = move.bind(this);
+            this._up = up.bind(this);
+            document.addEventListener('mousemove',this._move);
+            document.addEventListener('mouseup',this._up);
+        }
+        function move(ev) { 
+            let winW = document.documentElement.clientWidth;
+            let winH = document.documentElement.clientHeight;
+            let boxW = box.offsetWidth;
+            let boxH = box.offsetHeight;
+            console.log(winW - boxW)
+            box.style.left = ev.clientX - this.startX + this.startL + 'px';
+            box.style.top = ev.clientY - this.startY + this.startT + 'px';
+            if (box.offsetLeft <= 0) {
+                box.style.left = 0
+            }
+            if (box.offsetLeft >= winW - boxW) {
+                box.style.left = winW - boxW + 'px'
+            }
+            if (box.offsetTop <= 0) {
+                box.style.top = 0
+            }
+            if (box.offsetTop >= winH - boxH) {
+                box.style.top = winH - boxH + 'px'
+            }
+        }
+        function up(ev) { 
+            document.removeEventListener('mousemove',this._move);
+            document.removeEventListener('mouseup',this._up);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        .container{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        #a{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            z-index: 999;
+        }
+        .shadow{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            /* display: none; */
+            transition: 0.5s;
+            opacity: 0;
+            z-index: 998;
+        }
+        .modal{
+            margin: auto;
+            position: absolute;
+            top: -2000px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid gray;
+            width: 400px;
+            height: 200px;
+            transition: 0.2s;
+            z-index: 999;
+        }
+        .modal .header{
+            height: 30px;
+            border-bottom:1px solid gray;
+            text-align: center;
+            line-height: 30px;
+        }
+        .modal .body{
+            height: 100px;
+            border-bottom:1px solid gray;
+            background: royalblue;
+        }
+        .modal .footer button{
+            width: 60px;
+            height: 40px;
+            line-height: 40px;
+            margin: 15px 0 0 10px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="a">登录</button>
+        <div class="shadow"></div>
+        <div class="modal">
+            <div class="header">q请选择</div>
+            <div class="body">
+
+            </div>
+            <div class="footer">
+                <button class="confirm">确定</button>
+            </div>
+        </div>   
+    </div>
+    <script>
+        let container = document.querySelector('.container');
+        let btn = document.querySelector('#a');
+        let shadow = document.querySelector('.shadow');
+        let modal = document.querySelector('.modal');
+        let confirm = document.querySelector('.confirm');
+        container.onclick = function (ev) {
+            let target = ev.target;
+            if (target.id === 'a') {
+                console.log(1212)
+                
+                shadow.style.opacity = 1;
+                modal.style.top = 0;
+            }
+            if (target.className === 'confirm') {
+                    btn.style.zIndex = 999;
+                    shadow.style.opacity = '0';
+                    modal.style.top = '-2000px';
+            }
+        }
+    </script>
+</body>
+</html>
