@@ -28,7 +28,6 @@
             computed: {
                 selectedAll:{
                     get(){
-                        console.log(this.checkList.length)
                         return this.checkList.length === this.checkMsg.length 
                     },
                     set(val){

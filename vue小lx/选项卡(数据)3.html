@@ -41,9 +41,9 @@
                     {"id":3,"txt":"段落3333344"}
                 ]
             },
-            created() {  
-                this.queryData(this.tabData[this.cur]['id'])
-            },
+            // created() {  
+            //     this.queryData(this.tabData[this.cur]['id'])
+            // },
             methods: {
                 // queryData(curID){
                 //     axios.get('./data.json').then(result =>{
@@ -59,13 +59,15 @@
                 //     })
                 // },
 
-                queryData(curID){
-                    let itemData = this.txtData.find(item=>parseInt(item.id) === parseInt(curID))
-                    this.txt = itemData.txt
-                },
+                // queryData(curID){
+                //     let itemData = this.txtData.find(item=>parseInt(item.id) === parseInt(curID))
+                //     this.txt = itemData.txt
+                // },
                 handle(ev,index,id){
                     this.cur = index;
-                    this.queryData(id)
+                    //this.queryData(id);
+                    let itemData = this.txtData.find(item=>parseInt(item.id) === parseInt(id))
+                    this.txt = itemData.txt
                 }
             },
         })

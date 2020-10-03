@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.min.css">
+    <style>
+        .container{
+            width: 800px;
+            height: 300px;
+            position: relative;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+        .container .wrapper{
+            width: 4000px;
+            height: 300px;
+            display: flex;
+            position: absolute;
+            top: 0;
+	        left: 0;
+        }
+        .wrapper .slider{
+            width: 800px;
+            height: 300px;
+        }
+        .wrapper .slider img{
+            width: 100%;
+            height: 100%;
+        }
+        .pagination{
+            display: flex;
+            position: absolute;
+            left: 50%;
+            bottom: 5%;
+            transform: translateX(-50%);
+            padding-left: 10px;
+        }
+        .pagination li{
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 10px;
+            background: white;
+        }
+        .pagination li.active{
+            background: tomato;
+        }
+        .container .arrow{
+            background: url(./images/pre.png) no-repeat ;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            z-index: 999;
+            display: none;
+        }   
+        .arrow.changeRight{
+            right: -22px;
+            background-position: -50px 0;
+        }
+        .container:hover a{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="slider"><img src="./images/banner01.png" alt=""></div>
+            <div class="slider"><img src="./images/banner02.png" alt=""></div>
+            <div class="slider"><img src="./images/banner03.png" alt=""></div>
+            <div class="slider"><img src="./images/banner04.png" alt=""></div>
+            <div class="slider"><img src="./images/banner01.png" alt=""></div>
+        </div>
+        <ul class="pagination">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <a href="#" class="arrow changeLeft"></a>
+        <a href="#" class="arrow changeRight"></a>
+    </div>
+    <script>
+        let container = document.querySelector('.container');
+        let wrapper = container.querySelector('.wrapper');
+        let slider = wrapper.querySelectorAll('.slider');
+        let pagination = container.querySelector('.pagination');
+        let focus = pagination.querySelectorAll('li');
+        let changeLeft = container.querySelector('.changeLeft');
+        let changeRight = container.querySelector('.changeRight');
+        let activeIndex = 0;
+        let timer = null;
+        let len = focus.length;
+        function autoPlay() {  
+            
+            if (activeIndex >= 4 ) {
+                activeIndex = 0;
+                wrapper.style.transition = '0s';
+                wrapper.style.transform = `translateX(0px)`;
+                //wrapper.style.left = '0px';
+                wrapper.offsetLeft;  
+                 
+            } 
+            activeIndex++; 
+            wrapper.style.transition = '0.5s';
+            wrapper.style.transform = `translateX(${-activeIndex*800}px)`;
+            //wrapper.style.left = -activeIndex*800 + 'px';
+            Focus()
+        }
+        //自动轮播
+        timer = setInterval(autoPlay, 1000); 
+        //鼠标移入停止轮播
+        container.onmouseenter = function name(params) {
+            clearInterval(timer)
+            timer = null;
+        }
+        //鼠标移出开始轮播
+        container.onmouseleave = function name(params) {
+            timer = setInterval(autoPlay, 2000); 
+        }
+        //焦点与图片对齐
+        function Focus() {//焦点有4个图片却有5张
+            let temp = activeIndex === 4 ? 0 : activeIndex;
+            for (let i = 0; i < focus.length; i++) {
+                focus[i].classList.remove('active')    
+            }
+            focus[temp].classList.add('active')  
+        }
+        //点击焦点切换图片
+        Array.from(focus).forEach((element,index,ary) => {          
+            element.onclick = function () { //|| (index === 0 && activeIndex === len-1)
+                if (index === activeIndex ) {
+                    return;
+                }
+                activeIndex = index 
+                wrapper.style.transition = '0.5s';
+                wrapper.style.transform = `translateX(${-activeIndex*800}px)`;
+                Focus()
+            }     
+        });
+        //点击左侧切换
+        changeLeft.onclick = function () {
+            if (activeIndex <= 0) {
+                activeIndex = 4;
+                wrapper.style.transition = '0s';
+                wrapper.style.transform = `translateX(${-activeIndex*800}px)`;
+                wrapper.offsetLeft;
+            }
+            activeIndex--;
+            wrapper.style.transition = '0.5s';
+            wrapper.style.transform = `translateX(${-activeIndex*800}px)`;
+            Focus()
+        }
+        //点击右侧切换
+        changeRight.onclick = autoPlay;
+    </script>
+</body>
+</html>

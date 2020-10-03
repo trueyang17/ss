@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图左右运动版</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="css/index.css">
+	<style>
+		
+	</style>
+</head>
+
+<body>
+	<!-- <div id="app">
+		<div class="container" id="banner1">
+			<div class="wrapper">
+				<div class="slider">
+					<img src="images/banner01.png" alt="">
+				</div>
+				<div class="slider">
+					<img src="images/banner02.png" alt="">
+				</div>
+				<div class="slider">
+					<img src="images/banner03.png" alt="">
+				</div>
+				<div class="slider">
+					<img src="images/banner04.png" alt="">
+				</div>
+			</div>
+			<div class="pagination">
+				<li class="active"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</div>
+			<div>
+				<a href="javascript:;" class="arrow changeLeft"></a>
+				<a href="javascript:;" class="arrow changeRight"></a>
+			</div>
+		</div>
+	</div>	  -->
+	
+	<div id="app">
+		<banner-plugin v-if="bannerData.length" :data=bannerData :interval=1000  :transitionend=transitionend  ></banner-plugin>
+		<p> 快看，已经切换到第<span> {{temp}} </span>几张了！ </p>
+	</div>
+
+	<template id="button">
+		<div>
+			<a href="javascript:;" class="arrow changeLeft"  @click="change('left')"></a>
+			<a href="javascript:;" class="arrow changeRight" @click="change('right')"></a>
+		</div>
+	</template>
+
+	<template id="pagination">
+		<ul class="pagination" ref="pagination" >
+			<li v-for='(item,i) in arr' :class="{active:activeHandle(i)}" 
+			@click=change(i)></li>      
+		</ul>
+	</template>
+
+	<template id="banner">
+		<div class="container" id="banner1" @mouseenter=stopTimer(true)
+		@mouseleave=stopTimer(false) >
+			<div class="wrapper" :style=sty ref="wrapper">
+				<div class="slider" v-for="(item, index) in bannerData":key="index" >
+					<img :src=item.pic  alt="">
+				</div>
+			</div>
+
+			<banner-pagination v-if=pagination :total=bannerData.length-1 :index=activeIndex  @pagination=autoFocus ></banner-pagination>
+
+			<banner-button v-if='button' @handle=handleButton></banner-button>
+		</div>
+	</template>
+	<script src="js/vue.js"></script>  
+	<script src="js/axios.min.js"></script> 
+	<script src="js/axios.defaults.js"></script> 
+	<script src="js/1.js"></script> 
+	<script>
+
+		
+		let vm = new Vue({
+			el:'#app',
+			data: {
+				bannerData:[],
+				temp:0
+			},
+			components:{
+				BannerPlugin
+			},
+			created() {
+				axios.get('./slideshow1/data1.json').then(res=>{
+					this.bannerData = res
+				})
+			},
+			methods: {
+				transitionend(example){
+					this.temp = example.activeIndex + 1;
+					if (this.temp === 5) {
+						this.temp = 1;	
+					}				
+				}
+
+			},
+		})
+	</script>
+</body>
+
+</html>

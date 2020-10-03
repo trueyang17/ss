@@ -13,7 +13,7 @@ let change = function () {
     autoFocus()
 }
 let autoMove = function () {
-    index++;
+    index++;  
     if (index >= 5) {
         wrapper.style.transition = 'none';
         wrapper.style.transform = `translateX(0)`;

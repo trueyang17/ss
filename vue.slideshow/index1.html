@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.min.css">
+    <style>
+        .container{
+            position: relative;
+            width: 800px;
+            height: 300px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+        .wrapper{
+            position: absolute;
+            display: flex;
+            /* width: 4000px; */
+            height: 300px;
+            left: 0;
+            top: 0;
+        }
+        .slide{
+            width: 800px;
+            height: 300px;
+        }
+        .slide img{
+            display: block;
+            width: 800px;
+            height: 300px;
+        }
+        .pagination{
+            display: flex;
+            position: absolute;
+            left: 50%;
+            bottom: 5%;
+            transform: translateX(-50%);
+        }
+        .pagination li{
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background: white;
+            margin-right: 10px;
+        }
+        .pagination li.active{
+            background: brown;
+        }
+        .arrow{
+            position: absolute;
+            display: none;
+            width: 50px;
+            height: 50px;
+            background: url(./images/pre.png) no-repeat 0 0;
+            top: 50%;
+            transform: translateY(-50%);
+            
+        }
+        .right{
+            background-position: -50px 0;
+            right: -22px;
+        }
+        .container:hover a{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <banner v-if="bannerData.length" :data=bannerData ></banner>
+    </div>
+
+    <template id="banner">
+        <div class="container" @mouseenter=handleTimer(true) @mouseleave=handleTimer(false) >
+            <div class="wrapper" :style=sty ref='wrapper'>
+                <div class="slide" v-for="(item, index) in bannerData" :key="index">
+                    <img :src=item.pic >
+                </div>
+            </div>
+            <pagination :total=bannerData.length-1 :index=activeIndex @pagination=Focus></pagination>
+            <change-button @handle=changeButton></change-button>
+        </div>
+    </template>
+    
+    <template id="pagination">
+        <ul class="pagination">
+            <li v-for="(item, i) in arr" :key="i" :class={active:autoFocus(i)}  @click=handleFocus(i)></li>
+        </ul>
+    </template>
+    
+    <template id="changeButton">
+        <div>
+            <a href="javascript:;" class="arrow left"  @click=handleArrow('left') ></a>
+            <a href="javascript:;" class="arrow right" @click=handleArrow('right') ></a>
+        </div>
+    </template>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/axios.defaults.js"></script>
+    <script src="./js/vue.js"></script>
+    <script>
+        let pagination = {
+            template:'#pagination',
+            props:['total','index'],
+            data() {
+                return {
+                    arr:new Array(this.total).fill(null)
+                }
+            },
+            methods: {
+                autoFocus(i) {
+                    temp = this.index === this.total ? 0 : this.index;
+                    return i === temp
+                },
+                handleFocus(i){
+                    this.$emit('pagination',i)
+                }
+            },
+        }
+
+        let changeButton = {
+            template:'#changeButton',
+            methods: {
+                handleArrow(type){
+                    this.$emit('handle',type)
+                }
+            },
+        }
+
+        let banner = {
+            template:'#banner',
+            components:{
+                pagination,
+                changeButton   
+            },
+            props:{
+                data:{
+                    type:Array
+                },
+                initialSlide:{
+                    default:0,
+                    type:Number
+                },
+                interval:{
+                    default:1500,
+                    type:Number
+                },
+                speed:{
+                    default:300,
+                    type:Number
+                }
+            },
+            data() {
+                bannerData=[...this.data,this.data[0]];
+                activeIndex=this.initialSlide;
+                return {
+                    bannerData,
+                    activeIndex,
+                    sty:{
+                        width: bannerData.length*800 + 'px',
+                        left: -activeIndex*800 + 'px',
+                        transition:`left ${this.speed}ms linear`
+                    }
+                }
+            },
+            methods: {
+                autoPlay(){
+                    this.activeIndex++;
+                    if (this.activeIndex>=this.bannerData.length) {
+                        this.sty.transition = `left 0ms linear`;
+                        this.sty.left = '0px'
+                        this.$nextTick(()=>{
+                            this.$refs.wrapper.offsetLeft;
+                            this.activeIndex = 1;
+                            this.sty.transition = `left ${this.speed}ms linear`;
+                            this.sty.left = -this.activeIndex*800 + 'px'
+                        })
+                        return;
+                    }
+                    this.sty.transition = `left ${this.speed}ms linear`;
+                    this.sty.left = -this.activeIndex*800 + 'px'
+                },
+                handleTimer(s){
+                    if (s===true) {
+                        clearInterval(this.timer);
+                        this.timer=null;
+                        return;
+                    }
+                    this.timer = setInterval(this.autoPlay, this.interval);    
+                },
+                Focus(i){
+                    this.activeIndex = i;
+                    this.sty.transition = `left ${this.speed}ms linear`;
+                    this.sty.left = -this.activeIndex*800 + 'px'
+                },
+                changeButton(type){
+                    if (type === 'right') {
+                        this.autoPlay();
+                        return;
+                    }
+                    
+                    if (this.activeIndex<=0) {
+                        this.sty.transition = `left 0ms linear`;
+                        this.sty.left = -(this.bannerData.length-1)*800 + 'px';
+                        this.$nextTick(()=>{
+                            this.$refs.wrapper.offsetLeft;
+                            this.activeIndex = this.bannerData.length-2;
+                            this.sty.transition = `left ${this.speed}ms linear`;
+                            this.sty.left = -this.activeIndex*800 + 'px'
+                        })
+                        return;
+                    }
+                    this.activeIndex--;
+                    this.sty.transition = `left ${this.speed}ms linear`;
+                    this.sty.left = -this.activeIndex*800 + 'px'
+                }
+            },
+            mounted() {
+                this.timer = setInterval(this.autoPlay, this.interval);
+            },
+
+        }
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                bannerData:[]
+            },
+            created() {
+                axios.get('./slideshow1/data1.json').then(res=>{
+                    console.log(res)
+                    this.bannerData = res
+                })
+            },
+            components:{
+                banner
+            }
+        })
+    </script>
+</body>
+</html>
